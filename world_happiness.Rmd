@@ -1,0 +1,46 @@
+---
+title: "Freedom and GDP by Country"
+author: "Joanna Prout"
+date: "4/13/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library (tidyverse)
+library (hrbrthemes)
+library (plotly)
+
+d <- read.csv ("2019.csv")
+```
+
+
+
+```{r}
+plot  <- ggplot(d, 
+                aes(x=GDP.per.capita, y=Freedom.to.make.life.choices, 
+                       text = paste (Country.or.region, "\n",
+                                     "Freedom rating: ", Freedom.to.make.life.choices, "\n",
+                                     "GDP per capita: ", GDP.per.capita, 
+                                     sep = " "))) + 
+    geom_point(size=2) +
+    theme_ipsum(base_size = 15) +
+  labs (title = "Freedom Ratings and GDP by Country",
+        y = "Freedom to make life choices",
+        x = "GDP per capita",
+        caption = "Data from World Happiness Report | graphic @joieprout")
+  
+  
+plot_r <- ggplotly (plot, tooltip = "text")
+
+plot_r
+```
+
+
+```{r}
+##### Save it locally
+htmlwidgets::saveWidget(as_widget(plot_r), "FreedomGDP.html")
+
+```
+
